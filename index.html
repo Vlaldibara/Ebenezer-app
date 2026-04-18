@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<meta name="theme-color" content="#C0000A"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="EBENEZER"/>
+<meta name="description" content="EBENEZER Cleaning Services — Sistema profesional de gestión"/>
+<title>EBENEZER — Cleaning Services</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icons/icon-192.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --red:#C0000A;--red2:#E8000B;--red3:#FF1A24;--red-dark:#8B0007;--red-light:#FFE8E9;
+  --blue:#0A2463;--blue2:#1B3A8C;--blue3:#2455C3;--blue-light:#E8EDF8;
+  --white:#FFFFFF;--off:#F5F6FA;--gray:#8891A5;--dark:#0D0F1A;--border:#E2E5EF;
+  --shadow:0 4px 24px rgba(10,36,99,0.10);
+  --font-display:'Bebas Neue',sans-serif;--font-body:'Barlow',sans-serif;
+}
+body{font-family:var(--font-body);background:var(--off);color:var(--dark);min-height:100vh;overflow-x:hidden}
+
+/* ============ SCREEN SYSTEM ============ */
+.screen{display:none;min-height:100vh;animation:fadeIn 0.3s ease}
+.screen.active{display:flex;flex-direction:column}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ============ LOGIN SCREEN ============ */
+#screen-login{
+  background:linear-gradient(160deg,var(--blue) 0%,var(--blue2) 45%,var(--red-dark) 100%);
+  justify-content:center;align-items:center;padding:20px;min-height:100vh;
+  position:relative;overflow:hidden;
+}
+#screen-login::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 20% 80%,rgba(192,0,10,0.35) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 10%,rgba(36,85,195,0.4) 0%,transparent 60%);
+}
+.login-box{
+  background:rgba(255,255,255,0.07);backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.15);border-radius:24px;
+  padding:40px 36px;width:100%;max-width:420px;position:relative;z-index:1;
+  box-shadow:0 24px 80px rgba(0,0,0,0.4);
+}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-brand{font-family:var(--font-display);font-size:58px;letter-spacing:2px;color:#fff;line-height:1;margin-bottom:4px}
+.login-sub{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.5)}
+.login-tag{display:inline-block;background:var(--red);color:#fff;font-size:9px;letter-spacing:3px;padding:3px 10px;border-radius:20px;text-transform:uppercase;margin-top:6px}
+.login-divider{height:1px;background:rgba(255,255,255,0.12);margin:24px 0}
+.login-label{font-size:12px;color:rgba(255,255,255,0.65);margin-bottom:6px;display:block;letter-spacing:0.5px}
+.login-input{
+  width:100%;padding:13px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.1);color:#fff;font-family:var(--font-body);font-size:14px;
+  margin-bottom:14px;transition:border 0.2s;
+}
+.login-input::placeholder{color:rgba(255,255,255,0.35)}
+.login-input:focus{outline:none;border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.15)}
+.login-btn{
+  width:100%;padding:14px;border-radius:12px;border:none;
+  background:linear-gradient(90deg,var(--red2),var(--red3));
+  color:#fff;font-family:var(--font-body);font-size:15px;font-weight:600;
+  cursor:pointer;letter-spacing:0.5px;margin-top:6px;transition:opacity 0.2s,transform 0.1s;
+}
+.login-btn:hover{opacity:0.9}
+.login-btn:active{transform:scale(0.98)}
+.login-error{background:rgba(192,0,10,0.3);border:1px solid rgba(255,80,80,0.4);color:#ffb3b3;font-size:12px;padding:10px 14px;border-radius:10px;margin-bottom:12px;display:none}
+.login-footer{text-align:center;margin-top:20px;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1px}
+
+/* ============ APP HEADER ============ */
+.app-header{
+  background:linear-gradient(90deg,var(--blue) 0%,var(--blue2) 100%);
+  padding:0 16px;height:58px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 12px rgba(10,36,99,0.25);position:sticky;top:0;z-index:100;
+}
+.header-brand{display:flex;align-items:center;gap:10px}
+.header-logo-box{
+  width:36px;height:36px;background:var(--red);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:18px;color:#fff;letter-spacing:0.5px;flex-shrink:0;
+}
+.header-titles{display:flex;flex-direction:column}
+.header-name{font-family:var(--font-display);font-size:22px;color:#fff;letter-spacing:1px;line-height:1}
+.header-esibac{font-size:9px;color:rgba(255,255,255,0.45);letter-spacing:2px;text-transform:uppercase}
+.header-right{display:flex;align-items:center;gap:10px}
+.header-user{font-size:12px;color:rgba(255,255,255,0.75);text-align:right}
+.header-user strong{display:block;color:#fff;font-size:13px}
+.avatar-btn{
+  width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);
+  background:var(--red);display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;
+}
+.logout-btn{
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  color:rgba(255,255,255,0.8);font-size:11px;padding:5px 12px;border-radius:20px;cursor:pointer;
+  font-family:var(--font-body);
+}
+.logout-btn:hover{background:rgba(255,255,255,0.2)}
+
+/* ============ BOTTOM NAV ============ */
+.bottom-nav{
+  background:var(--blue);position:fixed;bottom:0;left:0;right:0;z-index:100;
+  display:flex;padding:6px 0 8px;box-shadow:0 -2px 16px rgba(10,36,99,0.2);
+}
+.bn-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:4px;color:rgba(255,255,255,0.45);
+  font-size:10px;letter-spacing:0.5px;transition:color 0.15s;
+}
+.bn-item.active{color:#fff}
+.bn-item.active .bn-icon{background:var(--red);border-radius:12px;padding:4px 14px}
+.bn-icon{font-size:18px;transition:all 0.15s}
+
+/* ============ CONTENT ============ */
+.app-content{flex:1;padding:16px;padding-bottom:80px;max-width:960px;margin:0 auto;width:100%}
+
+/* ============ CARDS ============ */
+.card{background:var(--white);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,0.04)}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:0.8px}
+.section-head{font-family:var(--font-display);font-size:26px;color:var(--blue);letter-spacing:1px;margin-bottom:16px}
+
+/* ============ METRIC CARDS ============ */
+.metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px}
+.metric{
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  border-radius:16px;padding:16px;color:#fff;position:relative;overflow:hidden;
+}
+.metric.red{background:linear-gradient(135deg,var(--red-dark),var(--red2))}
+.metric::after{content:'';position:absolute;right:-10px;bottom:-10px;width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.06)}
+.metric-num{font-family:var(--font-display);font-size:36px;color:#fff;line-height:1}
+.metric-label{font-size:11px;color:rgba(255,255,255,0.65);margin-top:3px;letter-spacing:0.5px}
+
+/* ============ BUTTONS ============ */
+.btn{padding:10px 18px;border-radius:10px;font-family:var(--font-body);font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s}
+.btn-primary{background:var(--red);color:#fff}
+.btn-primary:hover{background:var(--red2)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:var(--blue2)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--dark)}
+.btn-outline:hover{background:var(--off)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
+.btn-full{width:100%;padding:14px;font-size:15px;border-radius:12px}
+
+/* ============ FORM ELEMENTS ============ */
+.form-group{margin-bottom:14px}
+.form-label{font-size:12px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;display:block}
+.form-control{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:var(--font-body);font-size:14px;color:var(--dark);background:var(--white);transition:border 0.2s}
+.form-control:focus{outline:none;border-color:var(--blue3)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-row-full{grid-column:1/-1}
+textarea.form-control{resize:vertical;min-height:80px}
+
+/* ============ STATUS PILLS ============ */
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;letter-spacing:0.3px}
+.pill-ok{background:#E8F8F0;color:#0A6B3A}
+.pill-busy{background:#FFF3E0;color:#B35C00}
+.pill-done{background:#E8EDF8;color:var(--blue)}
+.pill-red{background:var(--red-light);color:var(--red-dark)}
+
+/* ============ TABLE ============ */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 12px;font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.8px;border-bottom:2px solid var(--border)}
+td{padding:12px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--off)}
+
+/* ============ EMPLOYEE CARD ============ */
+.emp-card{display:flex;align-items:center;gap:12px;padding:14px;background:var(--white);border-radius:14px;border:1.5px solid var(--border);margin-bottom:10px;cursor:pointer;transition:border 0.15s}
+.emp-card:hover{border-color:var(--blue3)}
+.emp-avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--blue3));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex-shrink:0}
+.emp-avatar.red{background:linear-gradient(135deg,var(--red-dark),var(--red2))}
+.emp-info{flex:1;min-width:0}
+.emp-name{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.emp-role{font-size:12px;color:var(--gray)}
+.emp-stats{display:flex;gap:8px;margin-top:3px}
+
+/* ============ AVAILABILITY GRID ============ */
+.avail-wrap{overflow-x:auto}
+.avail-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);min-width:500px}
+.avail-name{flex:0 0 90px;font-size:12px;font-weight:600;color:var(--blue)}
+.slot{font-size:10px;padding:4px 8px;border-radius:6px;font-weight:600;white-space:nowrap}
+.slot-free{background:#E8F8F0;color:#0A6B3A}
+.slot-busy{background:var(--red-light);color:var(--red-dark);text-decoration:line-through;opacity:0.75}
+
+/* ============ PHOTO UPLOADER ============ */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.photo-cell{aspect-ratio:1;border-radius:12px;border:2px dashed var(--border);background:var(--off);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:11px;color:var(--gray);gap:4px;transition:all 0.15s;position:relative;overflow:hidden}
+.photo-cell:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+.photo-cell.has-photo{border-style:solid;border-color:var(--blue3)}
+.photo-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px}
+.photo-cell .photo-label{position:relative;z-index:1;background:rgba(0,0,0,0.5);color:#fff;font-size:9px;padding:2px 6px;border-radius:4px}
+.photo-icon{font-size:22px}
+
+/* ============ NOTIFICATION TOAST ============ */
+.toast{
+  position:fixed;top:70px;right:16px;z-index:999;
+  background:var(--blue);color:#fff;border-radius:12px;
+  padding:12px 18px;font-size:13px;max-width:300px;
+  box-shadow:0 8px 32px rgba(10,36,99,0.3);
+  transform:translateX(120%);transition:transform 0.3s ease;
+  border-left:4px solid var(--red);
+}
+.toast.show{transform:translateX(0)}
+
+/* ============ AI PANEL ============ */
+.ai-box{
+  background:linear-gradient(135deg,var(--blue) 0%,var(--blue2) 60%,var(--red-dark) 100%);
+  border-radius:16px;padding:16px;color:#fff;margin-bottom:14px;
+}
+.ai-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ai-badge{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);font-size:11px;padding:4px 10px;border-radius:20px;letter-spacing:0.5px}
+.ai-input-row{display:flex;gap:8px}
+.ai-input{flex:1;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:#fff;font-family:var(--font-body);font-size:13px}
+.ai-input::placeholder{color:rgba(255,255,255,0.4)}
+.ai-input:focus{outline:none;background:rgba(255,255,255,0.18)}
+.ai-btn{background:var(--red);border:none;color:#fff;padding:10px 16px;border-radius:10px;cursor:pointer;font-size:13px;font-family:var(--font-body);white-space:nowrap}
+.ai-response{margin-top:12px;font-size:13px;line-height:1.7;color:rgba(255,255,255,0.9);display:none;background:rgba(0,0,0,0.15);border-radius:10px;padding:12px}
+
+/* ============ APPOINTMENT CARD ============ */
+.appt{background:var(--white);border-radius:14px;border-left:4px solid var(--blue);padding:14px 16px;margin-bottom:10px;box-shadow:0 2px 10px rgba(10,36,99,0.06)}
+.appt.active-appt{border-left-color:var(--red)}
+.appt-time{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.8px}
+.appt-client{font-size:15px;font-weight:700;color:var(--blue);margin:3px 0}
+.appt-address{font-size:12px;color:var(--gray);display:flex;align-items:center;gap:4px}
+.appt-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+
+/* ============ MAP PLACEHOLDER ============ */
+.map-box{background:linear-gradient(135deg,var(--blue-light),#D0E8FF);border-radius:12px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:var(--blue);gap:6px;border:1.5px solid rgba(36,85,195,0.2);cursor:pointer;transition:all 0.15s}
+.map-box:hover{background:var(--blue-light)}
+.map-icon{font-size:28px}
+
+/* ============ STARS ============ */
+.stars{display:flex;gap:2px}
+.star{font-size:14px;color:#F0A500}
+.star-empty{font-size:14px;color:var(--border)}
+
+/* ============ NOTIFICATION INDICATOR ============ */
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block}
+
+/* ============ TABS ============ */
+.tabs{display:flex;gap:4px;background:var(--off);border-radius:12px;padding:4px;margin-bottom:16px}
+.tab{flex:1;text-align:center;padding:8px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;color:var(--gray);transition:all 0.15s}
+.tab.active{background:var(--white);color:var(--blue);box-shadow:0 2px 8px rgba(10,36,99,0.1)}
+
+/* ============ LANG SELECTOR ============ */
+.lang-sel{
+  position:absolute;top:16px;right:16px;
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  color:rgba(255,255,255,0.8);font-size:11px;padding:5px 10px;
+  border-radius:20px;cursor:pointer;font-family:var(--font-body);
+  backdrop-filter:blur(10px);
+}
+.lang-sel option{color:#000;background:#fff}
+
+/* ============ RESPONSIVE ============ */
+@media(min-width:640px){
+  .metrics-grid{grid-template-columns:repeat(4,1fr)}
+  .photo-grid{grid-template-columns:repeat(4,1fr)}
+}
+@media(min-width:960px){
+  .app-content{padding:24px;padding-bottom:24px}
+  .bottom-nav{display:none}
+  .sidebar{
+    width:240px;background:var(--white);height:100vh;position:fixed;left:0;top:58px;
+    border-right:1px solid var(--border);padding:16px;overflow-y:auto;display:flex !important;
+    flex-direction:column;gap:4px;z-index:50;
+  }
+  .with-sidebar{margin-left:240px}
+  .sidebar-item{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+    cursor:pointer;font-size:13px;font-weight:500;color:var(--gray);transition:all 0.15s;
+  }
+  .sidebar-item:hover{background:var(--off);color:var(--dark)}
+  .sidebar-item.active{background:var(--blue-light);color:var(--blue)}
+  .sidebar-item.active .si-icon{color:var(--blue)}
+  .si-icon{font-size:16px;width:20px;text-align:center}
+  .sidebar-section{font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:1px;padding:12px 12px 4px}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div class="screen active" id="screen-login">
+  <div class="login-box">
+    <select class="lang-sel" id="lang-sel" onchange="changeLang(this.value)" style="position:relative;top:0;right:0;margin-bottom:16px">
+      <option value="es">🌐 Español</option>
+      <option value="en">🌐 English</option>
+      <option value="pt">🌐 Português</option>
+      <option value="fr">🌐 Français</option>
+    </select>
+    <div class="login-logo">
+      <div class="login-brand">EBENEZER</div>
+      <div class="login-sub">Cleaning Services</div>
+      <div class="login-tag">ESIBAC AI Intelligent Solutions · Better Results</div>
+    </div>
+    <div class="login-divider"></div>
+    <div id="login-error" class="login-error"></div>
+    <label class="login-label" id="lbl-user">Usuario / Correo electrónico</label>
+    <input class="login-input" type="text" id="login-user" placeholder="usuario@ebenezer.com" autocomplete="username"/>
+    <label class="login-label" id="lbl-pass">Contraseña</label>
+    <input class="login-input" type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"/>
+    <button class="login-btn" onclick="doLogin()" id="login-btn">Iniciar sesión</button>
+    <div class="login-footer" id="login-footer">EBENEZER © 2025 · Powered by ESIBAC AI</div>
+  </div>
+</div>
+
+<!-- ============ ADMIN APP ============ -->
+<div class="screen" id="screen-admin">
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="header-logo-box">EB</div>
+      <div class="header-titles">
+        <div class="header-name">EBENEZER</div>
+        <div class="header-esibac">ESIBAC AI · Cleaning Pro</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-user"><strong id="admin-name">Admin</strong><span>Administrador</span></div>
+      <div class="avatar-btn" id="admin-avatar">A</div>
+      <button class="logout-btn" onclick="doLogout()">Salir</button>
+    </div>
+  </header>
+
+  <!-- Desktop sidebar (admin) -->
+  <div class="sidebar" id="admin-sidebar" style="display:none">
+    <div class="sidebar-section">Principal</div>
+    <div class="sidebar-item active" onclick="adminTab('dashboard')"><span class="si-icon">📊</span>Dashboard</div>
+    <div class="sidebar-item" onclick="adminTab('agenda')"><span class="si-icon">📅</span><span id="si-agenda">Agendar cita</span></div>
+    <div class="sidebar-item" onclick="adminTab('empleados')"><span class="si-icon">👥</span><span id="si-emp">Empleados</span></div>
+    <div class="sidebar-item" onclick="adminTab('disponibilidad')"><span class="si-icon">🕐</span><span id="si-disp">Disponibilidad</span></div>
+    <div class="sidebar-section">Operaciones</div>
+    <div class="sidebar-item" onclick="adminTab('activos')"><span class="si-icon">🧹</span><span id="si-act">Trabajos activos</span></div>
+    <div class="sidebar-item" onclick="adminTab('fotos')"><span class="si-icon">📷</span><span id="si-fotos">Fotos</span></div>
+    <div class="sidebar-item" onclick="adminTab('notif')"><span class="si-icon">🔔</span><span id="si-notif">Notificaciones</span></div>
+    <div class="sidebar-item" onclick="adminTab('retro')"><span class="si-icon">⭐</span><span id="si-retro">Retroalimentación</span></div>
+    <div class="sidebar-item" onclick="adminTab('ia')"><span class="si-icon">✦</span><span id="si-ia">Asistente IA</span></div>
+    <div class="sidebar-section">Sistema</div>
+    <div class="sidebar-item" onclick="adminTab('config')"><span class="si-icon">⚙️</span>Configuración</div>
+  </div>
+
+  <div class="with-sidebar">
+    <div class="app-content" id="admin-content">
+
+      <!-- DASHBOARD -->
+      <div id="atab-dashboard">
+        <div class="section-head">Dashboard</div>
+        <div class="ai-box">
+          <div class="ai-header">
+            <span>✦</span><span style="font-size:14px;font-weight:600">Asistente EBENEZER AI</span>
+            <span class="ai-badge">ChatGPT</span>
+          </div>
+          <div class="ai-input-row">
+            <input class="ai-input" type="text" id="ai-q-dash" placeholder="Pregunta al asistente IA..."/>
+            <button class="ai-btn" onclick="askAI('ai-q-dash','ai-r-dash')">Preguntar</button>
+          </div>
+          <div class="ai-response" id="ai-r-dash"></div>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric"><div class="metric-num">8</div><div class="metric-label">Citas hoy</div></div>
+          <div class="metric red"><div class="metric-num">5</div><div class="metric-label">Empleados</div></div>
+          <div class="metric"><div class="metric-num">4.8</div><div class="metric-label">★ Promedio</div></div>
+          <div class="metric red"><div class="metric-num">47</div><div class="metric-label">Mes</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Próximas citas</span><button class="btn btn-primary btn-sm" onclick="adminTab('agenda')">+ Nueva</button></div>
+          <div id="appt-list-admin"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Rendimiento del equipo</span></div>
+          <div id="perf-list"></div>
+        </div>
+      </div>
+
+      <!-- AGENDA -->
+      <div id="atab-agenda" style="display:none">
+        <div class="section-head" id="sh-agenda">Nueva cita</div>
+        <div class="card">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" id="fl-client">Cliente</label>
+              <input class="form-control" type="text" id="appt-client" placeholder="Nombre del cliente"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="fl-phone">Teléfono / WhatsApp</label>
+              <input class="form-control" type="tel" id="appt-phone" placeholder="+1 / +504..."/>
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="fl-email">Correo electrónico</label>
+              <input class="form-control" type="email" id="appt-email" placeholder="cliente@correo.com"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="fl-emp">Empleado asignado</label>
+              <select class="form-control" id="appt-emp">
+                <option value="">— IA selecciona —</option>
+                <option value="maria">María González ✓</option>
+                <option value="carlos">Carlos Reyes ✓</option>
+                <option value="sofia">Sofía Méndez</option>
+                <option value="luis">Luis Flores ✓</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="fl-date">Fecha</label>
+              <input class="form-control" type="date" id="appt-date"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="fl-time">Hora</label>
+              <input class="form-control" type="time" id="appt-time"/>
+            </div>
+            <div class="form-group form-row-full">
+              <label class="form-label" id="fl-addr">Dirección</label>
+              <input class="form-control" type="text" id="appt-addr" placeholder="Dirección completa..." oninput="updateMap()"/>
+            </div>
+          </div>
+          <div class="map-box" id="map-preview" onclick="openMap()">
+            <div class="map-icon">📍</div>
+            <span id="map-text">Ver en Google Maps</span>
+          </div>
+          <div class="form-group" style="margin-top:12px">
+            <label class="form-label" id="fl-type">Tipo de servicio</label>
+            <select class="form-control" id="appt-type">
+              <option>Residencial</option><option>Comercial</option><option>Profunda</option><option>Post-obra</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" id="fl-notes">Notas</label>
+            <textarea class="form-control" id="appt-notes" placeholder="Instrucciones especiales..."></textarea>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+            <label style="display:flex;align-items:center;gap:5px;font-size:13px"><input type="checkbox" id="notif-wa-emp" checked/> <span id="lbl-wa-emp">WhatsApp empleado</span></label>
+            <label style="display:flex;align-items:center;gap:5px;font-size:13px"><input type="checkbox" id="notif-email-emp" checked/> <span id="lbl-email-emp">Correo empleado</span></label>
+            <label style="display:flex;align-items:center;gap:5px;font-size:13px"><input type="checkbox" id="notif-wa-cli" checked/> <span id="lbl-wa-cli">WhatsApp cliente</span></label>
+          </div>
+          <button class="btn btn-primary btn-full" onclick="saveAppointment()" id="btn-save-appt">✓ Confirmar y notificar</button>
+        </div>
+      </div>
+
+      <!-- EMPLEADOS -->
+      <div id="atab-empleados" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="section-head" style="margin:0" id="sh-emp">Empleados</div>
+          <button class="btn btn-primary btn-sm" onclick="showAddEmployee()">+ Agregar</button>
+        </div>
+        <div id="emp-cards-list"></div>
+        <!-- Add employee form -->
+        <div class="card" id="add-emp-form" style="display:none">
+          <div class="card-header"><span class="card-title" id="ct-add">Nuevo empleado</span></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nombre completo</label>
+              <input class="form-control" type="text" id="new-emp-name" placeholder="Nombre Apellido"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Rol</label>
+              <select class="form-control" id="new-emp-role">
+                <option>Limpieza residencial</option><option>Limpieza comercial</option><option>Limpieza profunda</option><option>General</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">WhatsApp</label>
+              <input class="form-control" type="tel" id="new-emp-phone" placeholder="+504 / +1..."/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Correo</label>
+              <input class="form-control" type="email" id="new-emp-email" placeholder="empleado@ebenezer.com"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Usuario (login)</label>
+              <input class="form-control" type="text" id="new-emp-user" placeholder="usuario"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contraseña</label>
+              <input class="form-control" type="password" id="new-emp-pass" placeholder="••••••"/>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-primary" onclick="saveEmployee()">Guardar empleado</button>
+            <button class="btn btn-outline" onclick="document.getElementById('add-emp-form').style.display='none'">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DISPONIBILIDAD -->
+      <div id="atab-disponibilidad" style="display:none">
+        <div class="section-head" id="sh-disp">Disponibilidad</div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px" id="ct-avail-today">Hoy — bloques horarios</div>
+          <div class="avail-wrap">
+            <div class="avail-row" style="font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;min-width:500px">
+              <div style="flex:0 0 90px"></div>
+              <span style="flex:1;text-align:center">8–10h</span>
+              <span style="flex:1;text-align:center">10–12h</span>
+              <span style="flex:1;text-align:center">12–14h</span>
+              <span style="flex:1;text-align:center">14–16h</span>
+              <span style="flex:1;text-align:center">16–18h</span>
+            </div>
+            <div id="avail-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVOS -->
+      <div id="atab-activos" style="display:none">
+        <div class="section-head" id="sh-act">Trabajos activos</div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th id="th-emp">Empleado</th>
+                  <th id="th-client">Cliente</th>
+                  <th id="th-start">Inicio</th>
+                  <th id="th-end">Término est.</th>
+                  <th id="th-status">Estado</th>
+                  <th>Mapa</th>
+                </tr>
+              </thead>
+              <tbody id="active-jobs-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOTOS -->
+      <div id="atab-fotos" style="display:none">
+        <div class="section-head" id="sh-fotos">Fotos del servicio</div>
+        <div id="photo-admin-view"></div>
+      </div>
+
+      <!-- NOTIFICACIONES -->
+      <div id="atab-notif" style="display:none">
+        <div class="section-head" id="sh-notif">Notificaciones</div>
+        <div class="card" id="notif-list"></div>
+      </div>
+
+      <!-- RETROALIMENTACIÓN -->
+      <div id="atab-retro" style="display:none">
+        <div class="section-head" id="sh-retro">Retroalimentación</div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:12px" id="ct-msg-preview">Mensaje al cliente</div>
+          <div id="retro-msg-preview" style="background:var(--off);border-radius:12px;padding:14px;font-size:13px;line-height:1.8;margin-bottom:14px"></div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-primary" onclick="sendRetro('wa')" id="btn-wa-retro">💬 WhatsApp</button>
+            <button class="btn btn-blue" onclick="sendRetro('email')" id="btn-email-retro">📧 Correo</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:12px" id="ct-reviews">Reseñas recientes</div>
+          <div id="reviews-list"></div>
+        </div>
+      </div>
+
+      <!-- IA -->
+      <div id="atab-ia" style="display:none">
+        <div class="section-head">Asistente IA — ChatGPT</div>
+        <div class="ai-box">
+          <div class="ai-header"><span>✦</span><span style="font-size:14px;font-weight:600">Asistente EBENEZER</span><span class="ai-badge">GPT-4o</span></div>
+          <div class="ai-input-row">
+            <input class="ai-input" type="text" id="ai-q-full" placeholder="¿Cómo puedo optimizar la agenda de mañana?"/>
+            <button class="ai-btn" onclick="askAI('ai-q-full','ai-r-full')">Enviar</button>
+          </div>
+          <div class="ai-response" id="ai-r-full"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:10px">Sugerencias rápidas</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <button class="btn btn-outline btn-sm" onclick="quickAI('Sugiere cómo equilibrar la carga de trabajo del equipo mañana')">Balance de carga</button>
+            <button class="btn btn-outline btn-sm" onclick="quickAI('¿Qué empleado tiene mejor calificación este mes?')">Mejor empleado</button>
+            <button class="btn btn-outline btn-sm" onclick="quickAI('Genera un mensaje profesional para solicitar retroalimentación al cliente en inglés y español')">Mensaje retro</button>
+            <button class="btn btn-outline btn-sm" onclick="quickAI('¿Cómo puedo mejorar la eficiencia del servicio de limpieza?')">Consejos de mejora</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIGURACIÓN DE MENSAJES -->
+      <div id="atab-config" style="display:none">
+        <div class="section-head">⚙️ Configuración de mensajes</div>
+
+        <div class="tabs" style="margin-bottom:16px">
+          <div class="tab active" id="cfg-btn-canales" onclick="cfgTab('canales')">🔔 Canales</div>
+          <div class="tab" id="cfg-btn-plantillas" onclick="cfgTab('plantillas')">✉️ Plantillas</div>
+          <div class="tab" id="cfg-btn-firma" onclick="cfgTab('firma')">✏️ Firma</div>
+          <div class="tab" id="cfg-btn-historial" onclick="cfgTab('historial')">📋 Historial</div>
+        </div>
+
+        <!-- CANALES -->
+        <div id="cfg-canales">
+          <div class="card">
+            <div class="card-header"><span class="card-title">¿Cuándo y cómo se envían los mensajes?</span></div>
+            <div id="channels-list"></div>
+          </div>
+        </div>
+
+        <!-- PLANTILLAS -->
+        <div id="cfg-plantillas" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <span style="font-size:14px;font-weight:600;color:var(--blue)">Plantillas de mensajes</span>
+            <button class="btn btn-primary btn-sm" onclick="toggleNewTemplate()">+ Nueva plantilla</button>
+          </div>
+          <div id="new-tpl-form" style="display:none" class="card">
+            <div class="card-header"><span class="card-title">Nueva plantilla</span></div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Nombre</label>
+                <input class="form-control" id="nt-name" placeholder="Ej. Bienvenida VIP"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Momento de envío</label>
+                <select class="form-control" id="nt-moment">
+                  <option>Al confirmar cita</option><option>Recordatorio 1h antes</option>
+                  <option>Al iniciar el trabajo</option><option>Al finalizar</option>
+                  <option>Solicitud de reseña</option><option>Personalizado</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Canal</label>
+                <select class="form-control" id="nt-channel">
+                  <option>WhatsApp + Correo</option><option>Solo WhatsApp</option><option>Solo Correo</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Destinatario</label>
+                <select class="form-control" id="nt-dest">
+                  <option>Cliente</option><option>Empleado</option><option>Ambos</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Variables disponibles — haz clic para insertar en el mensaje</label>
+              <div id="vars-new" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
+              <label class="form-label">Contenido del mensaje</label>
+              <textarea class="form-control" id="nt-body" style="min-height:110px;resize:vertical" placeholder="Escribe el mensaje aquí..."></textarea>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary" onclick="saveNewTemplate()">✓ Guardar plantilla</button>
+              <button class="btn btn-outline btn-sm" onclick="toggleNewTemplate()">Cancelar</button>
+            </div>
+          </div>
+          <div id="templates-container"></div>
+        </div>
+
+        <!-- FIRMA -->
+        <div id="cfg-firma" style="display:none">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Firma del negocio</span></div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Nombre del negocio</label>
+                <input class="form-control" id="sig-bizname" value="EBENEZER Cleaning Services" oninput="updateSigPreview()"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Teléfono de contacto</label>
+                <input class="form-control" id="sig-phone" value="+504 9999-0000" oninput="updateSigPreview()"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Sitio web</label>
+              <input class="form-control" id="sig-web" value="www.ebenezer.com" oninput="updateSigPreview()"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Texto de la firma (aparece al final de cada mensaje)</label>
+              <textarea class="form-control" id="sig-text" style="min-height:70px;resize:vertical" oninput="updateSigPreview()">— Equipo EBENEZER Cleaning Services
+☎ +504 9999-0000 | www.ebenezer.com
+"Limpieza con excelencia y compromiso"</textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Vista previa</label>
+              <div id="sig-preview-box" style="background:var(--off);border-radius:10px;padding:14px;font-size:13px;white-space:pre-wrap;line-height:1.8;border:1px solid var(--border);color:var(--gray);min-height:60px"></div>
+            </div>
+            <button class="btn btn-primary" onclick="saveSig()">✓ Guardar firma</button>
+          </div>
+        </div>
+
+        <!-- HISTORIAL -->
+        <div id="cfg-historial" style="display:none">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Historial de mensajes enviados</span>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <select class="form-control" id="hist-ch" style="width:auto;font-size:12px;padding:5px 10px" onchange="renderHistorial()">
+                  <option value="all">Todos los canales</option><option value="wa">WhatsApp</option><option value="email">Correo</option>
+                </select>
+                <select class="form-control" id="hist-st" style="width:auto;font-size:12px;padding:5px 10px" onchange="renderHistorial()">
+                  <option value="all">Todos</option><option value="ok">Enviados</option><option value="fail">Fallidos</option>
+                </select>
+              </div>
+            </div>
+            <div id="historial-list"></div>
+          </div>
+        </div>
+      </div><!-- end atab-config -->
+
+    </div>
+  </div>
+
+  <!-- Bottom nav (admin mobile) -->
+  <nav class="bottom-nav" id="admin-bnav">
+    <div class="bn-item active" onclick="adminTab('dashboard')"><span class="bn-icon">📊</span>Inicio</div>
+    <div class="bn-item" onclick="adminTab('agenda')"><span class="bn-icon">📅</span>Cita</div>
+    <div class="bn-item" onclick="adminTab('empleados')"><span class="bn-icon">👥</span>Equipo</div>
+    <div class="bn-item" onclick="adminTab('activos')"><span class="bn-icon">🧹</span>Activos</div>
+    <div class="bn-item" onclick="adminTab('config')"><span class="bn-icon">⚙️</span>Config</div>
+  </nav>
+</div>
+
+<!-- ============ EMPLOYEE APP ============ -->
+<div class="screen" id="screen-employee">
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="header-logo-box">EB</div>
+      <div class="header-titles">
+        <div class="header-name">EBENEZER</div>
+        <div class="header-esibac">ESIBAC AI · Cleaning Pro</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-user"><strong id="emp-display-name">Empleado</strong><span id="emp-display-role">Limpieza</span></div>
+      <div class="avatar-btn" id="emp-avatar" style="background:var(--red)">E</div>
+      <button class="logout-btn" onclick="doLogout()">Salir</button>
+    </div>
+  </header>
+
+  <div class="app-content">
+    <!-- Tabs employee -->
+    <div class="tabs">
+      <div class="tab active" id="etab-btn-citas" onclick="empTab('citas')">📅 Mis citas</div>
+      <div class="tab" id="etab-btn-fotos" onclick="empTab('fotos')">📷 Fotos</div>
+      <div class="tab" id="etab-btn-perfil" onclick="empTab('perfil')">👤 Perfil</div>
+    </div>
+
+    <!-- Mis citas -->
+    <div id="etab-citas">
+      <div id="emp-appt-list"></div>
+    </div>
+
+    <!-- Fotos -->
+    <div id="etab-fotos" style="display:none">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="ct-photo-upload">Subir fotos del trabajo</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cita activa</label>
+          <select class="form-control" id="emp-photo-appt">
+            <option>Casa Familia López — Hoy 8:00 AM</option>
+            <option>Oficinas Norte — Hoy 10:00 AM</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="lbl-photo-stage">Etapa</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-outline btn-sm" onclick="setStage(this,'Inicio')" id="stage-inicio">📷 Al inicio</button>
+            <button class="btn btn-outline btn-sm" onclick="setStage(this,'Proceso')" id="stage-proc">🔄 En proceso</button>
+            <button class="btn btn-outline btn-sm" onclick="setStage(this,'Final')" id="stage-final">✓ Al finalizar</button>
+          </div>
+        </div>
+        <div class="photo-grid" id="photo-upload-grid">
+          <div class="photo-cell" onclick="triggerUpload(0)"><div class="photo-icon">📷</div><span>Foto 1</span></div>
+          <div class="photo-cell" onclick="triggerUpload(1)"><div class="photo-icon">📷</div><span>Foto 2</span></div>
+          <div class="photo-cell" onclick="triggerUpload(2)"><div class="photo-icon">📷</div><span>Foto 3</span></div>
+          <div class="photo-cell" onclick="triggerUpload(3)"><div class="photo-icon">📷</div><span>Foto 4</span></div>
+          <div class="photo-cell" onclick="triggerUpload(4)"><div class="photo-icon">📷</div><span>Zona extra</span></div>
+          <div class="photo-cell" onclick="triggerUpload(5)"><div class="photo-icon">+</div><span>Agregar</span></div>
+        </div>
+        <input type="file" id="photo-input" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(event)"/>
+        <div class="form-group" style="margin-top:14px">
+          <label class="form-label" id="lbl-obs">Observación / Nota</label>
+          <textarea class="form-control" id="emp-obs" placeholder="Anota algo relevante del trabajo..."></textarea>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="submitPhotos()" id="btn-submit-photos">📤 Enviar fotos y observación</button>
+      </div>
+    </div>
+
+    <!-- Perfil -->
+    <div id="etab-perfil" style="display:none">
+      <div class="card">
+        <div style="display:flex;flex-direction:column;align-items:center;padding:20px 0">
+          <div style="width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,var(--red-dark),var(--red2));display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;margin-bottom:12px" id="profile-avatar-big">E</div>
+          <div style="font-size:20px;font-weight:700;color:var(--blue)" id="profile-name">Empleado</div>
+          <div style="font-size:13px;color:var(--gray);margin-top:3px" id="profile-role">Limpieza</div>
+          <div style="margin-top:8px"><span class="pill pill-ok">✓ Activo</span></div>
+        </div>
+        <div style="border-top:1px solid var(--border);padding-top:14px">
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px">
+            <span style="color:var(--gray)">WhatsApp</span><span id="profile-phone" style="font-weight:500">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px">
+            <span style="color:var(--gray)">Correo</span><span id="profile-email" style="font-weight:500">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:13px">
+            <span style="color:var(--gray)">Calificación</span>
+            <div class="stars" id="profile-stars"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:10px">Mis estadísticas del mes</div>
+        <div class="metrics-grid" style="grid-template-columns:1fr 1fr">
+          <div class="metric"><div class="metric-num" id="emp-stat-jobs">12</div><div class="metric-label">Trabajos</div></div>
+          <div class="metric red"><div class="metric-num" id="emp-stat-rating">4.8</div><div class="metric-label">★ Calificación</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="bn-item active" id="ebn-citas" onclick="empTab('citas')"><span class="bn-icon">📅</span>Citas</div>
+    <div class="bn-item" id="ebn-fotos" onclick="empTab('fotos')"><span class="bn-icon">📷</span>Fotos</div>
+    <div class="bn-item" id="ebn-perfil" onclick="empTab('perfil')"><span class="bn-icon">👤</span>Perfil</div>
+  </nav>
+</div>
+
+<script>
+// ============================================================
+// USERS DATABASE (extendable)
+// ============================================================
+const USERS = {
+  admin: { pass:'admin123', role:'admin', name:'Administrador', avatar:'AD' },
+  'maria.gonzalez': { pass:'maria2025', role:'employee', name:'María González', roleLabel:'Limpieza residencial', phone:'+504 9901-2345', email:'maria@ebenezer.com', rating:4.9, jobs:23, avatar:'MG', color:'blue' },
+  'carlos.reyes': { pass:'carlos2025', role:'employee', name:'Carlos Reyes', roleLabel:'Limpieza comercial', phone:'+504 9812-3456', email:'carlos@ebenezer.com', rating:4.7, jobs:18, avatar:'CR', color:'red' },
+  'sofia.mendez': { pass:'sofia2025', role:'employee', name:'Sofía Méndez', roleLabel:'Limpieza profunda', phone:'+504 9723-4567', email:'sofia@ebenezer.com', rating:4.6, jobs:15, avatar:'SM', color:'blue' },
+  'luis.flores': { pass:'luis2025', role:'employee', name:'Luis Flores', roleLabel:'General', phone:'+504 9634-5678', email:'luis@ebenezer.com', rating:4.4, jobs:11, avatar:'LF', color:'red' }
+};
+
+// ============================================================
+// APPOINTMENTS DATA
+// ============================================================
+const APPOINTMENTS = [
+  { id:1, client:'Familia López', emp:'maria.gonzalez', empName:'María G.', date:'Hoy', time:'8:00 AM', end:'10:00 AM', addr:'Col. Lomas del Guijarro, Tegucigalpa', status:'active', type:'Residencial' },
+  { id:2, client:'Corporativo Norte', emp:'sofia.mendez', empName:'Sofía M.', date:'Hoy', time:'9:00 AM', end:'12:00 PM', addr:'Blv. Morazán, Tegucigalpa', status:'active', type:'Comercial' },
+  { id:3, client:'Apt. Torre Azul', emp:'carlos.reyes', empName:'Carlos R.', date:'Hoy', time:'10:00 AM', end:'11:30 AM', addr:'Col. Palmira, Tegucigalpa', status:'done', type:'Residencial' },
+  { id:4, client:'Casa García', emp:'luis.flores', empName:'Luis F.', date:'Mañana', time:'8:00 AM', end:'10:00 AM', addr:'Col. Kennedy, Tegucigalpa', status:'pending', type:'Residencial' }
+];
+
+const REVIEWS = [
+  { client:'Roberto Sánchez', emp:'María G.', rating:5, comment:'Excelente servicio, muy puntuales y detallistas.', date:'Hace 2 días' },
+  { client:'Ana Martínez', emp:'Carlos R.', rating:4, comment:'Muy buena limpieza. Muy profesionales.', date:'Hace 3 días' },
+  { client:'Empresa Logística HN', emp:'Sofía M.', rating:5, comment:'Contrato mensual. Siempre profesionales.', date:'Hace 5 días' }
+];
+
+// ============================================================
+// TRANSLATIONS
+// ============================================================
+const T = {
+  es: { login:'Iniciar sesión', user:'Usuario / Correo electrónico', pass:'Contraseña', footer:'EBENEZER © 2025 · Powered by ESIBAC AI', badLogin:'Usuario o contraseña incorrectos.', lbl_client:'Cliente', lbl_phone:'Teléfono / WhatsApp', lbl_email:'Correo electrónico', lbl_emp:'Empleado asignado', lbl_date:'Fecha', lbl_time:'Hora', lbl_addr:'Dirección', lbl_type:'Tipo de servicio', lbl_notes:'Notas', btn_confirm:'✓ Confirmar y notificar', wa_emp:'WhatsApp empleado', email_emp:'Correo empleado', wa_cli:'WhatsApp cliente', avail_today:'Hoy — bloques horarios' },
+  en: { login:'Sign in', user:'Username / Email', pass:'Password', footer:'EBENEZER © 2025 · Powered by ESIBAC AI', badLogin:'Incorrect username or password.', lbl_client:'Client', lbl_phone:'Phone / WhatsApp', lbl_email:'Email address', lbl_emp:'Assigned employee', lbl_date:'Date', lbl_time:'Time', lbl_addr:'Address', lbl_type:'Service type', lbl_notes:'Notes', btn_confirm:'✓ Confirm & notify', wa_emp:'Employee WhatsApp', email_emp:'Employee email', wa_cli:'Client WhatsApp', avail_today:'Today — time slots' },
+  pt: { login:'Entrar', user:'Usuário / Email', pass:'Senha', footer:'EBENEZER © 2025 · Powered by ESIBAC AI', badLogin:'Usuário ou senha incorretos.', lbl_client:'Cliente', lbl_phone:'Telefone / WhatsApp', lbl_email:'Email', lbl_emp:'Funcionário designado', lbl_date:'Data', lbl_time:'Hora', lbl_addr:'Endereço', lbl_type:'Tipo de serviço', lbl_notes:'Notas', btn_confirm:'✓ Confirmar e notificar', wa_emp:'WhatsApp funcionário', email_emp:'Email funcionário', wa_cli:'WhatsApp cliente', avail_today:'Hoje — blocos horários' },
+  fr: { login:'Se connecter', user:'Utilisateur / Email', pass:'Mot de passe', footer:'EBENEZER © 2025 · Powered by ESIBAC AI', badLogin:'Identifiant ou mot de passe incorrect.', lbl_client:'Client', lbl_phone:'Téléphone / WhatsApp', lbl_email:'Email', lbl_emp:'Employé assigné', lbl_date:'Date', lbl_time:'Heure', lbl_addr:'Adresse', lbl_type:'Type de service', lbl_notes:'Notes', btn_confirm:'✓ Confirmer & notifier', wa_emp:'WhatsApp employé', email_emp:'Email employé', wa_cli:'WhatsApp client', avail_today:"Aujourd'hui — plages horaires" }
+};
+
+let currentLang = 'es';
+let currentUser = null;
+let activePhotoCell = 0;
+let currentStage = 'Inicio';
+let aiApiKey = 'sk-proj-REPLACE_WITH_YOUR_OPENAI_API_KEY'; // <-- Reemplaza aquí
+
+// ============================================================
+// LANG
+// ============================================================
+function changeLang(lang){
+  currentLang = lang;
+  const t = T[lang];
+  setText('login-btn', t.login);
+  setText('lbl-user', t.user);
+  setText('lbl-pass', t.pass);
+  setText('login-footer', t.footer);
+  setText('fl-client', t.lbl_client||'');
+  setText('fl-phone', t.lbl_phone||'');
+  setText('fl-email', t.lbl_email||'');
+  setText('fl-emp', t.lbl_emp||'');
+  setText('fl-date', t.lbl_date||'');
+  setText('fl-time', t.lbl_time||'');
+  setText('fl-addr', t.lbl_addr||'');
+  setText('fl-type', t.lbl_type||'');
+  setText('fl-notes', t.lbl_notes||'');
+  setText('btn-save-appt', t.btn_confirm||'');
+  setText('lbl-wa-emp', t.wa_emp||'');
+  setText('lbl-email-emp', t.email_emp||'');
+  setText('lbl-wa-cli', t.wa_cli||'');
+}
+function setText(id, v){ const el=document.getElementById(id); if(el&&v) el.textContent=v; }
+
+// ============================================================
+// LOGIN
+// ============================================================
+function doLogin(){
+  const u = document.getElementById('login-user').value.trim().toLowerCase();
+  const p = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-error');
+  if(USERS[u] && USERS[u].pass === p){
+    err.style.display='none';
+    currentUser = { username: u, ...USERS[u] };
+    showToast('✓ Bienvenido, ' + currentUser.name);
+    if(currentUser.role === 'admin'){
+      loadAdminScreen();
+    } else {
+      loadEmployeeScreen();
+    }
+  } else {
+    err.textContent = (T[currentLang]||T.es).badLogin;
+    err.style.display='block';
+    document.getElementById('login-pass').value='';
+  }
+}
+document.getElementById('login-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+document.getElementById('login-user').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('login-pass').focus(); });
+
+function doLogout(){
+  currentUser=null;
+  showScreen('login');
+  document.getElementById('login-user').value='';
+  document.getElementById('login-pass').value='';
+}
+
+// ============================================================
+// ADMIN SCREEN
+// ============================================================
+function loadAdminScreen(){
+  setText('admin-name', currentUser.name);
+  setText('admin-avatar', currentUser.avatar||'A');
+  renderAdminDashboard();
+  renderEmployeeCards();
+  renderAvailability();
+  renderActiveJobs();
+  renderPhotoAdmin();
+  renderNotifications();
+  renderRetro();
+  showScreen('admin');
+  // Show sidebar on desktop
+  if(window.innerWidth>=960) document.getElementById('admin-sidebar').style.display='flex';
+}
+
+function adminTab(tab){
+  const tabs=['dashboard','agenda','empleados','disponibilidad','activos','fotos','notif','retro','ia','config'];
+  tabs.forEach(t=>{ const el=document.getElementById('atab-'+t); if(el) el.style.display=(t===tab?'block':'none'); });
+  document.querySelectorAll('.sidebar-item').forEach(el=>{
+    el.classList.toggle('active', el.getAttribute('onclick')&&el.getAttribute('onclick').includes("'"+tab+"'"));
+  });
+  document.querySelectorAll('#admin-bnav .bn-item').forEach(el=>{
+    el.classList.toggle('active', el.getAttribute('onclick')&&el.getAttribute('onclick').includes("'"+tab+"'"));
+  });
+  if(tab==='config') initConfig();
+}
+
+function renderAdminDashboard(){
+  // Appointments
+  const list = document.getElementById('appt-list-admin');
+  list.innerHTML = APPOINTMENTS.map(a=>`
+    <div class="appt ${a.status==='active'?'active-appt':''}">
+      <div class="appt-time">${a.date} · ${a.time} – ${a.end}</div>
+      <div class="appt-client">${a.client}</div>
+      <div class="appt-address">📍 ${a.addr}</div>
+      <div class="appt-footer">
+        <span class="pill pill-${a.status==='active'?'red':a.status==='done'?'ok':'done'}">${a.status==='active'?'En curso':a.status==='done'?'Finalizado':'Pendiente'}</span>
+        <span style="font-size:12px;color:var(--gray)">${a.empName} · ${a.type}</span>
+      </div>
+    </div>`).join('');
+  // Performance
+  const perfs = Object.entries(USERS).filter(([k,v])=>v.role==='employee');
+  document.getElementById('perf-list').innerHTML = perfs.map(([k,v])=>`
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:13px;font-weight:500">${v.name}</span>
+        <span style="font-size:12px;font-weight:600;color:var(--blue)">${v.rating} ★</span>
+      </div>
+      <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+        <div style="height:100%;border-radius:3px;background:${v.color==='red'?'var(--red2)':'var(--blue3)'};width:${(v.rating/5*100).toFixed(0)}%"></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderEmployeeCards(){
+  const emps = Object.entries(USERS).filter(([k,v])=>v.role==='employee');
+  document.getElementById('emp-cards-list').innerHTML = emps.map(([k,v])=>`
+    <div class="emp-card">
+      <div class="emp-avatar ${v.color==='red'?'red':''}">${v.avatar}</div>
+      <div class="emp-info">
+        <div class="emp-name">${v.name}</div>
+        <div class="emp-role">${v.roleLabel}</div>
+        <div class="emp-stats">
+          <span class="pill pill-ok">★ ${v.rating}</span>
+          <span class="pill pill-done">${v.jobs} trabajos</span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--gray);text-align:right;white-space:nowrap">
+        <div>${v.phone}</div>
+        <div>${v.email}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderAvailability(){
+  const emps = Object.entries(USERS).filter(([k,v])=>v.role==='employee');
+  const sched = {
+    'maria.gonzalez':['busy','free','busy','busy','free'],
+    'carlos.reyes':['free','busy','free','free','free'],
+    'sofia.mendez':['busy','busy','free','free','free'],
+    'luis.flores':['free','free','free','free','free']
+  };
+  document.getElementById('avail-grid').innerHTML = emps.map(([k,v])=>`
+    <div class="avail-row">
+      <div class="avail-name">${v.name.split(' ')[0]}</div>
+      ${(sched[k]||['free','free','free','free','free']).map(s=>`<div class="slot slot-${s}" style="flex:1;text-align:center">${s==='free'?'✓':'✗'}</div>`).join('')}
+    </div>`).join('');
+}
+
+function renderActiveJobs(){
+  document.getElementById('active-jobs-tbody').innerHTML = APPOINTMENTS.filter(a=>a.status!=='pending').map(a=>`
+    <tr>
+      <td><strong>${a.empName}</strong></td>
+      <td><div style="font-weight:600">${a.client}</div><div style="font-size:11px;color:var(--gray)">${a.addr.substring(0,30)}...</div></td>
+      <td>${a.time}</td>
+      <td>${a.end}</td>
+      <td><span class="pill pill-${a.status==='active'?'red':'ok'}">${a.status==='active'?'En curso':'Finalizado'}</span></td>
+      <td><button class="btn btn-outline btn-sm" onclick="openMapAddr('${a.addr}')">📍</button></td>
+    </tr>`).join('');
+}
+
+function renderPhotoAdmin(){
+  document.getElementById('photo-admin-view').innerHTML = APPOINTMENTS.map(a=>`
+    <div class="card">
+      <div class="card-header"><span class="card-title">${a.client} — ${a.empName}</span><span class="pill pill-${a.status==='done'?'ok':'busy'}">${a.status==='done'?'Finalizado':'En curso'}</span></div>
+      <div class="photo-grid">
+        ${['Inicio','Proceso','Final','Extra 1','Extra 2','Extra 3'].map(l=>`<div class="photo-cell"><div class="photo-icon">${a.status==='done'?'🖼':'📷'}</div><span>${l}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function renderNotifications(){
+  const notifs = [
+    {icon:'💬',title:'WhatsApp enviado — María González',sub:'Cita confirmada para hoy 8:00 AM — Casa Familia López.',time:'Hace 5 min'},
+    {icon:'📧',title:'Correo enviado — Cliente Familia López',sub:'Confirmación de servicio programado. Empleada: María González.',time:'Hace 5 min'},
+    {icon:'✦',title:'IA — Reasignación sugerida aplicada',sub:'Se equilibró carga del equipo para mañana automáticamente.',time:'Hace 30 min'},
+    {icon:'💬',title:'WhatsApp — servicio finalizado al cliente',sub:'Estimado cliente, su servicio ha finalizado. ¡Gracias por confiar en EBENEZER!',time:'Hace 2 h'}
+  ];
+  document.getElementById('notif-list').innerHTML = notifs.map(n=>`
+    <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${n.icon}</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:13px">${n.title}</div><div style="font-size:12px;color:var(--gray);margin-top:2px">${n.sub}</div></div>
+      <span style="font-size:11px;color:var(--gray);white-space:nowrap">${n.time}</span>
+    </div>`).join('');
+}
+
+function renderRetro(){
+  document.getElementById('retro-msg-preview').innerHTML = `
+    Estimado/a <strong>cliente</strong>,<br><br>
+    Fue un placer atenderle hoy. Esperamos que el resultado haya superado sus expectativas.<br><br>
+    En <strong>EBENEZER Cleaning Services</strong> nos comprometemos siempre al mejor servicio, y su opinión es muy valiosa para nosotros.<br><br>
+    ¿Podría tomarse un momento para calificarnos? Solo 30 segundos.<br><br>
+    <span style="color:var(--red);font-weight:600">👉 Calificar servicio: [enlace]</span><br><br>
+    <em>¡Muchas gracias! — Equipo EBENEZER</em>`;
+  document.getElementById('reviews-list').innerHTML = REVIEWS.map(r=>`
+    <div style="padding:12px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-weight:600;font-size:13px">${r.client}</span>
+        <div class="stars">${'★'.repeat(r.rating)+'☆'.repeat(5-r.rating)}</div>
+      </div>
+      <div style="font-size:12px;color:var(--gray)">${r.comment}</div>
+      <div style="font-size:11px;color:var(--gray);margin-top:4px">${r.emp} · ${r.date}</div>
+    </div>`).join('');
+}
+
+function showAddEmployee(){ document.getElementById('add-emp-form').style.display='block'; }
+
+function saveEmployee(){
+  const name = document.getElementById('new-emp-name').value.trim();
+  const user = document.getElementById('new-emp-user').value.trim().toLowerCase();
+  const pass = document.getElementById('new-emp-pass').value;
+  const role = document.getElementById('new-emp-role').value;
+  const phone = document.getElementById('new-emp-phone').value;
+  const email = document.getElementById('new-emp-email').value;
+  if(!name||!user||!pass){ showToast('⚠ Completa nombre, usuario y contraseña'); return; }
+  const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);
+  USERS[user] = { pass, role:'employee', name, roleLabel:role, phone, email, rating:5.0, jobs:0, avatar:initials, color:'blue' };
+  document.getElementById('add-emp-form').style.display='none';
+  document.getElementById('new-emp-name').value='';
+  document.getElementById('new-emp-user').value='';
+  document.getElementById('new-emp-pass').value='';
+  renderEmployeeCards();
+  showToast('✓ Empleado agregado: '+name);
+}
+
+function saveAppointment(){
+  const c = document.getElementById('appt-client').value.trim();
+  const d = document.getElementById('appt-date').value;
+  const t = document.getElementById('appt-time').value;
+  if(!c||!d||!t){ showToast('⚠ Completa cliente, fecha y hora'); return; }
+  const empSel = document.getElementById('appt-emp').value;
+  const empName = empSel ? (USERS[empSel]?.name||empSel) : 'IA asignado';
+  APPOINTMENTS.push({ id:Date.now(), client:c, emp:empSel, empName, date:d, time:t, end:'—', addr:document.getElementById('appt-addr').value||'—', status:'pending', type:document.getElementById('appt-type').value });
+  renderAdminDashboard();
+  showToast('✓ Cita agendada y notificaciones enviadas');
+  adminTab('dashboard');
+}
+
+// ============================================================
+// EMPLOYEE SCREEN
+// ============================================================
+function loadEmployeeScreen(){
+  const u = currentUser;
+  setText('emp-display-name', u.name);
+  setText('emp-display-role', u.roleLabel||'Limpieza');
+  setText('emp-avatar', u.avatar||'E');
+  document.getElementById('emp-avatar').style.background = u.color==='red'?'var(--red)':'var(--blue)';
+  setText('profile-name', u.name);
+  setText('profile-role', u.roleLabel||'Limpieza');
+  setText('profile-phone', u.phone||'—');
+  setText('profile-email', u.email||'—');
+  document.getElementById('profile-avatar-big').textContent = u.avatar||'E';
+  document.getElementById('emp-stat-jobs').textContent = u.jobs||0;
+  document.getElementById('emp-stat-rating').textContent = u.rating||5;
+  const stars = document.getElementById('profile-stars');
+  const r = Math.round(u.rating||5);
+  stars.innerHTML = '★'.repeat(r)+'<span style="color:var(--border)">'+'★'.repeat(5-r)+'</span>';
+  // My appointments
+  const myAppts = APPOINTMENTS.filter(a=>a.emp===currentUser.username||a.emp.includes(currentUser.username.split('.')[0]));
+  document.getElementById('emp-appt-list').innerHTML = (myAppts.length?myAppts:APPOINTMENTS.slice(0,2)).map(a=>`
+    <div class="appt ${a.status==='active'?'active-appt':''}">
+      <div class="appt-time">${a.date} · ${a.time} – ${a.end}</div>
+      <div class="appt-client">${a.client}</div>
+      <div class="appt-address">📍 <span onclick="openMapAddr('${a.addr}')" style="color:var(--blue3);cursor:pointer;text-decoration:underline">${a.addr}</span></div>
+      <div class="appt-footer">
+        <span class="pill pill-${a.status==='active'?'red':a.status==='done'?'ok':'done'}">${a.status==='active'?'En curso':a.status==='done'?'Finalizado':'Pendiente'}</span>
+        <button class="btn btn-blue btn-sm" onclick="empTab('fotos')">📷 Fotos</button>
+      </div>
+    </div>`).join('');
+  // Update photo appt select
+  const sel = document.getElementById('emp-photo-appt');
+  sel.innerHTML = APPOINTMENTS.map(a=>`<option>${a.client} — ${a.date} ${a.time}</option>`).join('');
+  showScreen('employee');
+}
+
+function empTab(tab){
+  ['citas','fotos','perfil'].forEach(t=>{
+    const el=document.getElementById('etab-'+t); if(el) el.style.display=(t===tab?'block':'none');
+    const btn=document.getElementById('etab-btn-'+t); if(btn) btn.classList.toggle('active',t===tab);
+    const bn=document.getElementById('ebn-'+t); if(bn) bn.classList.toggle('active',t===tab);
+  });
+}
+
+// ============================================================
+// PHOTO UPLOAD
+// ============================================================
+function setStage(btn, stage){
+  currentStage=stage;
+  document.querySelectorAll('#etab-fotos .btn').forEach(b=>b.classList.replace('btn-primary','btn-outline'));
+  btn.classList.replace('btn-outline','btn-primary');
+}
+
+function triggerUpload(idx){
+  activePhotoCell=idx;
+  document.getElementById('photo-input').click();
+}
+
+function handlePhoto(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const grid = document.getElementById('photo-upload-grid');
+    const cell = grid.children[activePhotoCell];
+    cell.classList.add('has-photo');
+    cell.innerHTML = `<img src="${ev.target.result}" alt="foto"/><span class="photo-label">${currentStage}</span>`;
+  };
+  reader.readAsDataURL(file);
+  e.target.value='';
+}
+
+function submitPhotos(){
+  const obs = document.getElementById('emp-obs').value.trim();
+  showToast('✓ Fotos y observación enviadas al administrador');
+  document.getElementById('emp-obs').value='';
+}
+
+// ============================================================
+// MAP
+// ============================================================
+function updateMap(){
+  const addr = document.getElementById('appt-addr').value.trim();
+  setText('map-text', addr ? '📍 Ver: '+addr.substring(0,40) : 'Ver en Google Maps');
+}
+function openMap(){ const addr=document.getElementById('appt-addr').value.trim(); if(addr) openMapAddr(addr); }
+function openMapAddr(addr){ if(addr&&addr!=='—') window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr),'_blank'); }
+
+// ============================================================
+// AI — OPENAI CHATGPT INTEGRATION
+// ============================================================
+async function askAI(inputId, responseId){
+  const q = document.getElementById(inputId).value.trim();
+  if(!q) return;
+  const respEl = document.getElementById(responseId);
+  respEl.style.display='block';
+  respEl.textContent='✦ Procesando...';
+  try {
+    const res = await fetch('https://api.openai.com/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+aiApiKey},
+      body:JSON.stringify({
+        model:'gpt-4o-mini',
+        messages:[
+          {role:'system',content:'Eres el asistente de inteligencia artificial de EBENEZER Cleaning Services, un sistema profesional de gestión de limpieza. Ayudas a optimizar la agenda, balancear la carga del equipo, generar mensajes profesionales y dar consejos de servicio. Responde de forma concisa y profesional en el idioma del usuario.'},
+          {role:'user',content:q}
+        ],
+        max_tokens:400
+      })
+    });
+    const data = await res.json();
+    if(data.choices&&data.choices[0]) respEl.textContent=data.choices[0].message.content;
+    else respEl.textContent='⚠ No se pudo obtener respuesta. Verifica tu API key de OpenAI.';
+  } catch(err){
+    respEl.textContent='⚠ Error de conexión. Configura tu API key de OpenAI en el archivo index.html.';
+  }
+}
+
+function quickAI(question){
+  document.getElementById('ai-q-full').value=question;
+  askAI('ai-q-full','ai-r-full');
+}
+
+// ============================================================
+// RETRO
+// ============================================================
+function sendRetro(channel){
+  showToast(channel==='wa'?'💬 Mensaje WhatsApp enviado al cliente':'📧 Correo enviado al cliente');
+}
+
+// ============================================================
+// CONFIGURACIÓN DE MENSAJES
+// ============================================================
+const MSG_VARS = [
+  {k:'{{nombre_cliente}}',l:'Nombre cliente'},
+  {k:'{{nombre_empleado}}',l:'Nombre empleado'},
+  {k:'{{fecha}}',l:'Fecha'},
+  {k:'{{hora}}',l:'Hora'},
+  {k:'{{direccion}}',l:'Dirección'},
+  {k:'{{tipo_servicio}}',l:'Tipo servicio'},
+  {k:'{{empresa}}',l:'Empresa'},
+  {k:'{{enlace_calificacion}}',l:'Enlace reseña'},
+  {k:'{{firma}}',l:'Firma'},
+];
+
+const MSG_CHANNELS = [
+  {id:'wa',name:'WhatsApp Business',sub:'Envío automático a empleados y clientes',on:true},
+  {id:'email',name:'Correo electrónico',sub:'Notificaciones vía email',on:true},
+  {id:'confirm',name:'Notificación al confirmar cita',sub:'Avisar automáticamente al agendar',on:true},
+  {id:'fin',name:'Notificación al finalizar',sub:'Avisar al cliente cuando termina el trabajo',on:true},
+  {id:'retro',name:'Solicitud de retroalimentación',sub:'Enviar encuesta 15 min después de finalizar',on:true},
+  {id:'rec',name:'Recordatorio 1 hora antes',sub:'Recordar al cliente y empleado con anticipación',on:false},
+];
+
+const TEMPLATES = [
+  {id:1,name:'Confirmación de cita',moment:'Al confirmar cita',channel:'WhatsApp + Correo',dest:'Cliente',on:true,type:'wa',
+   body:'Hola {{nombre_cliente}} 👋,\n\nNos complace confirmar su cita de limpieza:\n\n📅 Fecha: {{fecha}}\n🕐 Hora: {{hora}}\n📍 Dirección: {{direccion}}\n🧹 Servicio: {{tipo_servicio}}\n👤 Empleado asignado: {{nombre_empleado}}\n\n¡Estaremos listos para brindarle el mejor servicio!\n\n{{firma}}'},
+  {id:2,name:'Aviso al empleado',moment:'Al confirmar cita',channel:'WhatsApp',dest:'Empleado',on:true,type:'wa',
+   body:'Hola {{nombre_empleado}} 👋,\n\nTienes una nueva cita asignada:\n\n📅 {{fecha}} a las {{hora}}\n📍 {{direccion}}\n👤 Cliente: {{nombre_cliente}}\n🧹 Tipo: {{tipo_servicio}}\n\nRecuerda tomar fotos al inicio. ¡Éxito!\n\n{{firma}}'},
+  {id:3,name:'Trabajo finalizado',moment:'Al finalizar',channel:'WhatsApp + Correo',dest:'Cliente',on:true,type:'fn',
+   body:'Estimado/a {{nombre_cliente}},\n\n✅ Su servicio de limpieza ha sido completado exitosamente.\n\nAdjuntamos las fotos del trabajo realizado. Esperamos que el resultado haya superado sus expectativas.\n\n¡Gracias por elegir {{empresa}}!\n\n{{firma}}'},
+  {id:4,name:'Solicitud de reseña',moment:'Solicitud de reseña',channel:'WhatsApp + Correo',dest:'Cliente',on:true,type:'rt',
+   body:'Estimado/a {{nombre_cliente}} 😊,\n\nFue un placer atenderle. Su opinión es muy valiosa para nosotros.\n\n¿Podría calificarnos? Solo 30 segundos:\n\n⭐ {{enlace_calificacion}}\n\n¡Muchas gracias por su confianza!\n\n{{firma}}'},
+  {id:5,name:'Recordatorio 1h antes',moment:'Recordatorio 1h antes',channel:'WhatsApp',dest:'Cliente',on:false,type:'wa',
+   body:'Hola {{nombre_cliente}} 👋,\n\nRecordatorio: en ~1 hora llegará nuestro equipo a:\n📍 {{direccion}}\n\n¡Nos vemos pronto!\n\n{{firma}}'},
+];
+
+const MSG_HISTORY = [
+  {id:1,client:'Roberto Sánchez',tpl:'Confirmación de cita',ch:'wa',date:'Hoy 8:05 AM',status:'ok'},
+  {id:2,client:'Roberto Sánchez',tpl:'Confirmación de cita',ch:'email',date:'Hoy 8:05 AM',status:'ok'},
+  {id:3,client:'Ana Martínez',tpl:'Trabajo finalizado',ch:'wa',date:'Hoy 11:30 AM',status:'ok'},
+  {id:4,client:'Empresa Logística HN',tpl:'Solicitud de reseña',ch:'email',date:'Ayer 3:00 PM',status:'ok'},
+  {id:5,client:'Casa García',tpl:'Recordatorio 1h antes',ch:'wa',date:'Ayer 7:00 AM',status:'fail'},
+  {id:6,client:'Carlos Reyes',tpl:'Aviso al empleado',ch:'wa',date:'Ayer 8:00 AM',status:'ok'},
+];
+
+function cfgTab(tab){
+  ['canales','plantillas','firma','historial'].forEach(t=>{
+    const el=document.getElementById('cfg-'+t);
+    if(el) el.style.display=t===tab?'block':'none';
+    const btn=document.getElementById('cfg-btn-'+t);
+    if(btn) btn.classList.toggle('active',t===tab);
+  });
+  if(tab==='plantillas') renderTemplates();
+  if(tab==='historial') renderHistorial();
+  if(tab==='canales') renderChannels();
+  if(tab==='firma') updateSigPreview();
+}
+
+function renderChannels(){
+  const el=document.getElementById('channels-list');
+  if(!el) return;
+  el.innerHTML=MSG_CHANNELS.map(ch=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)">
+      <div>
+        <div style="font-weight:600;font-size:13px">${ch.name}</div>
+        <div style="font-size:12px;color:var(--gray);margin-top:2px">${ch.sub}</div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0">
+        <input type="checkbox" id="chk-${ch.id}" ${ch.on?'checked':''} onchange="toggleChannel('${ch.id}',this.checked)" style="width:auto;accent-color:var(--red)"/>
+        <span style="font-size:12px;font-weight:500;color:${ch.on?'var(--g2)':'var(--gray)'}" id="lbl-chk-${ch.id}">${ch.on?'Activo':'Inactivo'}</span>
+      </label>
+    </div>`).join('');
+}
+
+function toggleChannel(id, on){
+  const ch=MSG_CHANNELS.find(c=>c.id===id);
+  if(ch) ch.on=on;
+  const lbl=document.getElementById('lbl-chk-'+id);
+  if(lbl){lbl.textContent=on?'Activo':'Inactivo';lbl.style.color=on?'var(--g2)':'var(--gray)';}
+  showToast((on?'✓ Activado':'⊘ Desactivado')+': '+ch?.name);
+}
+
+function renderTemplates(){
+  const el=document.getElementById('templates-container');
+  if(!el) return;
+  el.innerHTML=TEMPLATES.map(t=>buildTplCard(t)).join('');
+  renderVarChips('vars-new','nt-body');
+}
+
+function buildTplCard(t){
+  const icons={wa:'💬',fn:'✅',rt:'⭐',email:'📧'};
+  const colors={wa:'#E8F5E9',fn:'#EAF3DE',rt:'#FAEEDA',email:'#E6F1FB'};
+  const ic=icons[t.type]||'💬';
+  const bg=colors[t.type]||'#E8F5E9';
+  return `<div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px" id="tcard-${t.id}">
+    <div style="padding:12px 14px;background:var(--off);display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer" onclick="toggleTplBody(${t.id})">
+      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+        <div style="width:32px;height:32px;border-radius:8px;background:${bg};display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">${ic}</div>
+        <div style="min-width:0">
+          <div style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.name}</div>
+          <div style="font-size:11px;color:var(--gray)">${t.moment} · ${t.dest} · ${t.channel}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0" onclick="event.stopPropagation()">
+        <span style="display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;cursor:pointer;background:${t.on?'#EAF3DE':'#FCEBEB'};color:${t.on?'#3B6D11':'#8B0007'}" onclick="toggleTpl(${t.id})">${t.on?'Activo':'Inactivo'}</span>
+        <button class="btn btn-sm" style="background:var(--red);color:#fff;border-color:var(--red)" onclick="openEditTpl(${t.id})">Editar</button>
+        <button class="btn btn-sm btn-outline" onclick="testSendTpl(${t.id})">Prueba</button>
+      </div>
+    </div>
+    <div style="display:none;padding:14px;border-top:1px solid var(--border)" id="tbody-${t.id}">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+        <span style="background:var(--blue-light);color:var(--blue);font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600">${t.moment}</span>
+        <span style="background:#FAEEDA;color:#854F0B;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600">${t.dest}</span>
+        ${t.channel.includes('WhatsApp')?'<span style="background:#E8F5E9;color:#1B5E20;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600">💬 WhatsApp</span>':''}
+        ${t.channel.includes('Correo')?'<span style="background:var(--blue-light);color:var(--blue);font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600">📧 Correo</span>':''}
+      </div>
+      <label class="form-label" style="margin-bottom:6px">Vista previa (con datos de ejemplo)</label>
+      <div style="background:${bg};border-left:3px solid ${t.type==='wa'?'#25D366':t.type==='rt'?'#BA7517':'var(--blue3)'};border-radius:8px;padding:12px;font-size:12px;line-height:1.8;white-space:pre-wrap;word-break:break-word" id="tprev-${t.id}">${fmtPreview(t.body)}</div>
+      <div id="tedit-${t.id}"></div>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap">
+        <input style="flex:1;min-width:110px;padding:7px 10px;border:0.5px solid var(--border);border-radius:8px;font-size:12px;background:#fff;color:var(--dark)" placeholder="Número o correo de prueba" id="ttest-${t.id}"/>
+        <button class="btn btn-sm" style="background:var(--blue);color:#fff" onclick="sendTestMsg(${t.id})">Enviar prueba</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function fmtPreview(body){
+  return body
+    .replace(/{{nombre_cliente}}/g,'<strong style="color:var(--blue)">Roberto Sánchez</strong>')
+    .replace(/{{nombre_empleado}}/g,'<strong style="color:var(--blue)">María González</strong>')
+    .replace(/{{fecha}}/g,'<strong>Viernes 18 Abr 2025</strong>')
+    .replace(/{{hora}}/g,'<strong>8:00 AM</strong>')
+    .replace(/{{direccion}}/g,'<strong>Col. Lomas del Guijarro, Tegucigalpa</strong>')
+    .replace(/{{tipo_servicio}}/g,'<strong>Residencial</strong>')
+    .replace(/{{empresa}}/g,'<strong>EBENEZER Cleaning Services</strong>')
+    .replace(/{{enlace_calificacion}}/g,'<span style="color:var(--red);font-weight:600">⭐ ebenezer.com/calificar</span>')
+    .replace(/{{firma}}/g,'<em style="color:var(--gray);font-size:11px">— Equipo EBENEZER Cleaning Services\n☎ +504 9999-0000</em>')
+    .replace(/\n/g,'<br>');
+}
+
+function toggleTplBody(id){
+  const b=document.getElementById('tbody-'+id);
+  if(b) b.style.display=b.style.display==='none'?'block':'none';
+}
+
+function toggleTpl(id){
+  const t=TEMPLATES.find(x=>x.id===id);
+  if(!t) return;
+  t.on=!t.on;
+  renderTemplates();
+  showToast((t.on?'✓ Activada':'⊘ Desactivada')+': '+t.name);
+}
+
+function openEditTpl(id){
+  const t=TEMPLATES.find(x=>x.id===id);
+  const ea=document.getElementById('tedit-'+id);
+  const prev=document.getElementById('tprev-'+id);
+  const tbody=document.getElementById('tbody-'+id);
+  if(!t||!ea) return;
+  tbody.style.display='block';
+  if(ea.innerHTML.trim()) { ea.innerHTML=''; return; }
+  ea.innerHTML=`
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+      <label class="form-label" style="margin-bottom:5px">✏️ Editar mensaje</label>
+      <div style="font-size:11px;color:var(--gray);margin-bottom:6px">Haz clic en una variable para insertarla al cursor:</div>
+      <div id="evars-${id}" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px"></div>
+      <textarea id="eta-${id}" style="width:100%;padding:10px;border:1.5px solid var(--blue3);border-radius:10px;font-size:13px;line-height:1.8;resize:vertical;min-height:130px;background:#fff;color:var(--dark);font-family:inherit">${t.body}</textarea>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-primary" onclick="saveTplEdit(${id})">✓ Guardar cambios</button>
+        <button class="btn btn-outline btn-sm" onclick="cancelTplEdit(${id})">Cancelar</button>
+      </div>
+    </div>`;
+  renderVarChipsTA('evars-'+id,'eta-'+id);
+}
+
+function saveTplEdit(id){
+  const t=TEMPLATES.find(x=>x.id===id);
+  const ta=document.getElementById('eta-'+id);
+  const prev=document.getElementById('tprev-'+id);
+  const ea=document.getElementById('tedit-'+id);
+  if(!t||!ta) return;
+  t.body=ta.value;
+  if(prev) prev.innerHTML=fmtPreview(t.body);
+  if(ea) ea.innerHTML='';
+  showToast('✓ Plantilla "'+t.name+'" guardada correctamente');
+}
+
+function cancelTplEdit(id){
+  const ea=document.getElementById('tedit-'+id);
+  if(ea) ea.innerHTML='';
+}
+
+function testSendTpl(id){
+  const t=TEMPLATES.find(x=>x.id===id);
+  if(t) showToast('💬 Enviando prueba: '+t.name+'...');
+}
+
+function sendTestMsg(id){
+  const inp=document.getElementById('ttest-'+id);
+  const t=TEMPLATES.find(x=>x.id===id);
+  if(!inp||!t) return;
+  if(!inp.value.trim()){showToast('⚠ Ingresa un número o correo de prueba');return;}
+  MSG_HISTORY.unshift({id:Date.now(),client:'Prueba — '+inp.value,tpl:t.name,ch:t.type==='wa'?'wa':'email',date:'Ahora',status:'ok'});
+  showToast('✓ Prueba enviada a: '+inp.value);
+  inp.value='';
+}
+
+function renderVarChips(containerId, targetId){
+  const c=document.getElementById(containerId);
+  if(!c) return;
+  c.innerHTML=MSG_VARS.map(v=>`<span style="display:inline-flex;align-items:center;background:var(--blue-light);color:var(--blue);font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid rgba(36,85,195,0.2);cursor:pointer;margin:2px;transition:all 0.12s;user-select:none" onclick="insertVarAt('${v.k}','${targetId}')" onmouseover="this.style.background='var(--blue)';this.style.color='#fff'" onmouseout="this.style.background='var(--blue-light)';this.style.color='var(--blue)'">${v.l}</span>`).join('');
+}
+
+function renderVarChipsTA(containerId, targetId){
+  const c=document.getElementById(containerId);
+  if(!c) return;
+  c.innerHTML=MSG_VARS.map(v=>`<span style="display:inline-flex;align-items:center;background:var(--blue-light);color:var(--blue);font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid rgba(36,85,195,0.2);cursor:pointer;margin:2px;user-select:none;transition:all 0.12s" onclick="insertVarAt('${v.k}','${targetId}')" onmouseover="this.style.background='var(--blue)';this.style.color='#fff'" onmouseout="this.style.background='var(--blue-light)';this.style.color='var(--blue)'">${v.l}</span>`).join('');
+}
+
+function insertVarAt(key, targetId){
+  const el=document.getElementById(targetId);
+  if(!el) return;
+  const pos=el.selectionStart??el.value.length;
+  el.value=el.value.slice(0,pos)+key+el.value.slice(pos);
+  el.focus();
+  el.selectionStart=el.selectionEnd=pos+key.length;
+}
+
+function toggleNewTemplate(){
+  const f=document.getElementById('new-tpl-form');
+  if(!f) return;
+  const open=f.style.display==='none';
+  f.style.display=open?'block':'none';
+  if(open){renderVarChips('vars-new','nt-body');document.getElementById('nt-name')?.focus();}
+}
+
+function saveNewTemplate(){
+  const name=document.getElementById('nt-name')?.value.trim();
+  const body=document.getElementById('nt-body')?.value.trim();
+  if(!name||!body){showToast('⚠ Completa el nombre y el contenido');return;}
+  const moment=document.getElementById('nt-moment')?.value;
+  const channel=document.getElementById('nt-channel')?.value;
+  const dest=document.getElementById('nt-dest')?.value;
+  const type=channel.includes('WhatsApp')&&!channel.includes('Solo Correo')?'wa':'email';
+  TEMPLATES.push({id:Date.now(),name,moment,channel,dest,on:true,type,body});
+  document.getElementById('nt-name').value='';
+  document.getElementById('nt-body').value='';
+  toggleNewTemplate();
+  renderTemplates();
+  showToast('✓ Plantilla "'+name+'" creada exitosamente');
+}
+
+function renderHistorial(){
+  const el=document.getElementById('historial-list');
+  if(!el) return;
+  const cf=document.getElementById('hist-ch')?.value||'all';
+  const cs=document.getElementById('hist-st')?.value||'all';
+  let items=MSG_HISTORY;
+  if(cf!=='all') items=items.filter(x=>x.ch===cf);
+  if(cs!=='all') items=items.filter(x=>x.status===(cs==='ok'?'ok':'fail'));
+  if(!items.length){
+    el.innerHTML='<div style="text-align:center;padding:20px;font-size:13px;color:var(--gray)">Sin registros con ese filtro</div>';
+    return;
+  }
+  el.innerHTML=items.map(h=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border)">
+      <div style="width:32px;height:32px;border-radius:50%;background:${h.ch==='wa'?'#E8F5E9':'var(--blue-light)'};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">${h.ch==='wa'?'💬':'📧'}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:13px">${h.tpl}</div>
+        <div style="font-size:11px;color:var(--gray)">→ ${h.client}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <span style="display:inline-flex;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:${h.status==='ok'?'#EAF3DE':'#FCEBEB'};color:${h.status==='ok'?'#3B6D11':'#8B0007'}">${h.status==='ok'?'✓ Enviado':'✗ Fallido'}</span>
+        <div style="font-size:10px;color:var(--gray);margin-top:2px">${h.date}</div>
+      </div>
+      ${h.status==='fail'?`<button class="btn btn-sm btn-outline" onclick="showToast('↺ Reenviando...')" style="font-size:11px">↺ Reenviar</button>`:''}
+    </div>`).join('');
+}
+
+function updateSigPreview(){
+  const text=document.getElementById('sig-text')?.value;
+  const prev=document.getElementById('sig-preview-box');
+  if(prev&&text) prev.textContent=text;
+}
+
+function saveSig(){
+  showToast('✓ Firma guardada — se aplicará a todos los mensajes');
+}
+
+// Init config panel
+function initConfig(){
+  renderChannels();
+  updateSigPreview();
+}
+
+
+// ============================================================
+// UTILS
+// ============================================================
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+}
+
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// Desktop sidebar show/hide
+window.addEventListener('resize',()=>{
+  const s=document.getElementById('admin-sidebar');
+  if(s) s.style.display = window.innerWidth>=960?'flex':'none';
+});
+setTimeout(()=>{ const s=document.getElementById('admin-sidebar'); if(s&&currentUser?.role==='admin'&&window.innerWidth>=960) s.style.display='flex'; },100);
+
+// Service Worker registration for PWA
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "EBENEZER Cleaning Services",
+  "short_name": "EBENEZER",
+  "description": "Sistema profesional de gestión de limpieza — ESIBAC AI Intelligent Solutions",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0A2463",
+  "theme_color": "#C0000A",
+  "orientation": "portrait-primary",
+  "lang": "es",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "screenshots": [
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "form_factor": "narrow" }
+  ],
+  "categories": ["business", "productivity"],
+  "shortcuts": [
+    { "name": "Nueva cita", "url": "./index.html", "description": "Agendar nueva cita de limpieza" }
+  ]
+}
